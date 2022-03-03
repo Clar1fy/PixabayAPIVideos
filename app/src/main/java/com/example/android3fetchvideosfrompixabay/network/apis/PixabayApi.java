@@ -1,6 +1,6 @@
-package com.example.android3fetchvideosfrompixabay.network;
+package com.example.android3fetchvideosfrompixabay.network.apis;
 
-import com.example.android3fetchvideosfrompixabay.network.network_model.PixabayResponse;
+import com.example.android3fetchvideosfrompixabay.network.network_model.responses.pixabay.PixabayResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

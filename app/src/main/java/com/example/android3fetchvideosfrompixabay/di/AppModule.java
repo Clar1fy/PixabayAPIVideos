@@ -1,6 +1,7 @@
 package com.example.android3fetchvideosfrompixabay.di;
 
-import com.example.android3fetchvideosfrompixabay.network.PixabayApi;
+import com.example.android3fetchvideosfrompixabay.network.apis.PixabayApi;
+import com.example.android3fetchvideosfrompixabay.network.apis.RapidApi;
 import com.example.android3fetchvideosfrompixabay.repository.PixabayRepository;
 import com.example.android3fetchvideosfrompixabay.viewmodel.PixabayViewModel;
 
@@ -23,8 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AppModule {
     @Singleton
     @Provides
-    public PixabayRepository provideRepository(PixabayApi api) {
-        return new PixabayRepository(api);
+    public PixabayRepository provideRepository(PixabayApi api, RapidApi rapidApi) {
+        return new PixabayRepository(api, rapidApi);
     }
 
     @Singleton
@@ -43,6 +44,16 @@ public class AppModule {
                 .build().create(PixabayApi.class);
 
 
+    }
+
+    @Singleton
+    @Provides
+    public RapidApi provideRapidApi(OkHttpClient okHttpClient0) {
+        return new Retrofit.Builder()
+                .baseUrl("https://translated-mymemory---translation-memory.p.rapidapi.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient0)
+                .build().create(RapidApi.class);
     }
 
     @Singleton

@@ -1,27 +1,28 @@
-package com.example.android3fetchvideosfrompixabay.ui.fragment;
+package com.example.android3fetchvideosfrompixabay.ui.fragments;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
+import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.android3fetchvideosfrompixabay.adapter.TranslationAdapter;
 import com.example.android3fetchvideosfrompixabay.adapter.VideosAdapter;
 import com.example.android3fetchvideosfrompixabay.base.BaseFragment;
 import com.example.android3fetchvideosfrompixabay.databinding.FragmentSearchVideoBinding;
 import com.example.android3fetchvideosfrompixabay.viewmodel.PixabayViewModel;
+import com.google.android.exoplayer2.ExoPlayer;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding> {
+    ExoPlayer exoPlayer;
     PixabayViewModel viewModel;
     Handler handler;
     VideosAdapter adapter;
+    TranslationAdapter translationAdapter;
 
 
     @Override
@@ -29,13 +30,22 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
         return FragmentSearchVideoBinding.inflate(getLayoutInflater());
     }
 
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void initialize() {
         viewModel = new ViewModelProvider(this).get(PixabayViewModel.class);
         initAdapter();
-        initListeners();
 
+    }
+
+    private void initAdapter() {
+        adapter = new VideosAdapter();
+        translationAdapter = new TranslationAdapter();
+    }
+
+    @Override
+    protected void setUpListener() {
+        initListeners();
     }
 
     private void initListeners() {
@@ -58,29 +68,33 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        binding.progressbar.setVisibility(View.VISIBLE);
+//                        binding.progressbar.setVisibility(View.VISIBLE);
                         String word = binding.etVideos.getText().toString();
-                        viewModel.getVideos(word).observe(getViewLifecycleOwner(), videos -> {
-                            if (videos != null) {
-                                binding.progressbar.setVisibility(View.INVISIBLE);
-                                adapter.setApiData(videos);
-                                binding.recyclerview.setAdapter(adapter);
+//                        viewModel.getVideos(word).observe(getViewLifecycleOwner(), videos -> {
+//                            if (videos != null) {
+//                                binding.progressbar.setVisibility(View.INVISIBLE);
+//                                adapter.setApiData(videos);
+//                                binding.recyclerview.setAdapter(adapter);
+//
+//                            }
+//
+//                        });
+                        viewModel.getTranslations(word).observe(getViewLifecycleOwner(), translations -> {
+                            if (translations != null) {
+                                translationAdapter.setList(translations);
+                                binding.recyclerview.setAdapter(translationAdapter);
 
+                                Log.d("ololo", "run: ");
                             }
-
 
                         });
 
-
                     }
+
                 }, 2000);
-
             }
-        });
-    }
 
-    private void initAdapter() {
-        adapter = new VideosAdapter();
+        });
     }
 
     @Override
@@ -89,3 +103,4 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
         binding = null;
     }
 }
+

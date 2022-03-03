@@ -21,4 +21,25 @@ public abstract class BaseFragment<VB extends ViewBinding> extends Fragment {
         binding = bind();
         return binding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initialize();
+        setUpObserve();
+        setUpListener();
+    }
+
+    protected void setUpListener() {
+
+    }
+
+
+    protected void setUpObserve() {
+
+    }
+
+    protected void initialize() {
+
+    }
 }

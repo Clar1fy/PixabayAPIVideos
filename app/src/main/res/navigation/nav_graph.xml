@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/searchVideoFragment"
-        android:name="com.example.android3fetchvideosfrompixabay.ui.fragment.SearchVideoFragment"
+        android:name="com.example.android3fetchvideosfrompixabay.ui.fragments.SearchVideoFragment"
         android:label="fragment_search_video"
         tools:layout="@layout/fragment_search_video" />
 </navigation>
