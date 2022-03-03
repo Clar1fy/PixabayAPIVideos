@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android3fetchvideosfrompixabay.databinding.VideosHolderBinding;
-import com.example.android3fetchvideosfrompixabay.network.network_model.Hits;
+import com.example.android3fetchvideosfrompixabay.network.network_model.responses.pixabay.Hits;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosHold
         }
 
         public void onBind(Hits hits) {
-            binding.vvVideos.setVideoPath(hits.getUrl());
+            binding.vvVideo.setVideoPath(hits.getUrl());
 
         }
     }

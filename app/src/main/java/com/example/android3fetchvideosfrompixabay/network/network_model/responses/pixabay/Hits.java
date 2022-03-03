@@ -1,4 +1,4 @@
-package com.example.android3fetchvideosfrompixabay.network.network_model;
+package com.example.android3fetchvideosfrompixabay.network.network_model.responses.pixabay;
 
 import com.google.gson.annotations.SerializedName;
 

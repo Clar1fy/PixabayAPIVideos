@@ -1,15 +1,13 @@
-package com.example.android3fetchvideosfrompixabay.ui.fragment;
+package com.example.android3fetchvideosfrompixabay.ui.fragments;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.android3fetchvideosfrompixabay.adapter.TranslationAdapter;
 import com.example.android3fetchvideosfrompixabay.adapter.VideosAdapter;
 import com.example.android3fetchvideosfrompixabay.base.BaseFragment;
 import com.example.android3fetchvideosfrompixabay.databinding.FragmentSearchVideoBinding;
@@ -22,6 +20,7 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
     PixabayViewModel viewModel;
     Handler handler;
     VideosAdapter adapter;
+    TranslationAdapter translationAdapter;
 
 
     @Override
@@ -29,14 +28,15 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
         return FragmentSearchVideoBinding.inflate(getLayoutInflater());
     }
 
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void initialize() {
         viewModel = new ViewModelProvider(this).get(PixabayViewModel.class);
         initAdapter();
         initListeners();
 
     }
+
 
     private void initListeners() {
         binding.etVideos.addTextChangedListener(new TextWatcher() {
@@ -68,19 +68,27 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
 
                             }
 
+                        });
+                        viewModel.getTranslations(word).observe(getViewLifecycleOwner(), translations -> {
+                            if (translations != null) {
+                                translationAdapter.setList(translations);
+                                binding.recyclerview.setAdapter(translationAdapter);
+
+                            }
 
                         });
 
-
                     }
-                }, 2000);
 
+                }, 2000);
             }
+
         });
     }
 
     private void initAdapter() {
         adapter = new VideosAdapter();
+        translationAdapter = new TranslationAdapter();
     }
 
     @Override
@@ -89,3 +97,4 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
         binding = null;
     }
 }
+

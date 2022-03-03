@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.fragment.SearchVideoFragment">
+    tools:context=".ui.fragments.SearchVideoFragment">
 
 
     <EditText
@@ -29,14 +29,22 @@
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/videos_holder" />
+            tools:listitem="@layout/translation_holder" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/exoplayer"
+        android:layout_width="114dp"
+        android:layout_height="122dp"
+        app:resize_mode="fit"
+        app:show_timeout="3000"
+        app:use_controller="true" />
 
 </LinearLayout>
