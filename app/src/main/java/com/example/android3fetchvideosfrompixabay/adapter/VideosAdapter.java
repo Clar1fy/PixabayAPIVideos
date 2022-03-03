@@ -46,6 +46,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosHold
         }
 
         public void onBind(Hits hits) {
+            binding.vvVideo.setVideoPath(hits.getUrl());
 
         }
     }

@@ -3,7 +3,7 @@ package com.example.android3fetchvideosfrompixabay.ui.fragments;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.View;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -12,13 +12,11 @@ import com.example.android3fetchvideosfrompixabay.adapter.VideosAdapter;
 import com.example.android3fetchvideosfrompixabay.base.BaseFragment;
 import com.example.android3fetchvideosfrompixabay.databinding.FragmentSearchVideoBinding;
 import com.example.android3fetchvideosfrompixabay.viewmodel.PixabayViewModel;
-import com.google.android.exoplayer2.ExoPlayer;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding> {
-    ExoPlayer exoPlayer;
     PixabayViewModel viewModel;
     Handler handler;
     VideosAdapter adapter;
@@ -35,18 +33,10 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
     protected void initialize() {
         viewModel = new ViewModelProvider(this).get(PixabayViewModel.class);
         initAdapter();
-
-    }
-
-    private void initAdapter() {
-        adapter = new VideosAdapter();
-        translationAdapter = new TranslationAdapter();
-    }
-
-    @Override
-    protected void setUpListener() {
         initListeners();
+
     }
+
 
     private void initListeners() {
         binding.etVideos.addTextChangedListener(new TextWatcher() {
@@ -68,23 +58,22 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        binding.progressbar.setVisibility(View.VISIBLE);
+                        binding.progressbar.setVisibility(View.VISIBLE);
                         String word = binding.etVideos.getText().toString();
-//                        viewModel.getVideos(word).observe(getViewLifecycleOwner(), videos -> {
-//                            if (videos != null) {
-//                                binding.progressbar.setVisibility(View.INVISIBLE);
-//                                adapter.setApiData(videos);
-//                                binding.recyclerview.setAdapter(adapter);
-//
-//                            }
-//
-//                        });
+                        viewModel.getVideos(word).observe(getViewLifecycleOwner(), videos -> {
+                            if (videos != null) {
+                                binding.progressbar.setVisibility(View.INVISIBLE);
+                                adapter.setApiData(videos);
+                                binding.recyclerview.setAdapter(adapter);
+
+                            }
+
+                        });
                         viewModel.getTranslations(word).observe(getViewLifecycleOwner(), translations -> {
                             if (translations != null) {
                                 translationAdapter.setList(translations);
                                 binding.recyclerview.setAdapter(translationAdapter);
 
-                                Log.d("ololo", "run: ");
                             }
 
                         });
@@ -95,6 +84,11 @@ public class SearchVideoFragment extends BaseFragment<FragmentSearchVideoBinding
             }
 
         });
+    }
+
+    private void initAdapter() {
+        adapter = new VideosAdapter();
+        translationAdapter = new TranslationAdapter();
     }
 
     @Override
